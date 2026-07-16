@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Reveal — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Segoe UI", sans-serif;
+    background: #0a0a0a; color: #f5f5f0;
+  }
+  .hero {
+    height: 100vh; display: grid; place-content: center; text-align: center;
+  }
+  .hero h1 { font-size: clamp(2.5rem, 8vw, 6rem); letter-spacing: -0.03em; }
+  .hero p { color: #888; margin-top: 1rem; }
+  section {
+    max-width: 720px; margin: 0 auto; padding: 20vh 24px;
+  }
+  h2 { font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 1rem; }
+  .card {
+    background: #161616; border: 1px solid #2a2a2a; border-radius: 12px;
+    padding: 2rem; margin-top: 1rem; color: #bbb; line-height: 1.7;
+  }
+  /* ---- 核心:reveal ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <h1>Scroll Reveal</h1>
+    <p>向下滚动 ↓</p>
+  </div>
+
+  <section>
+    <h2 class="reveal">元素随滚动逐渐出现</h2>
+    <div class="card reveal" style="--d: 0.1s">同一组元素用 <code>--d</code> 自定义属性错开延迟,形成 stagger 节奏。</div>
+    <div class="card reveal" style="--d: 0.2s">只动 opacity 和 transform,GPU 加速,不触发重排。</div>
+    <div class="card reveal" style="--d: 0.3s">触发一次后 unobserve,滚回去不会重播。</div>
+  </section>
+
+  <section>
+    <h2 class="reveal">缓动函数决定质感</h2>
+    <div class="card reveal" style="--d: 0.1s">这里用 <code>cubic-bezier(0.22, 1, 0.36, 1)</code>(easeOutQuint 近似)——快速启动、缓慢收尾,比默认 ease 高级得多。</div>
+  </section>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>
