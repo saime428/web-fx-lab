@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hover Image Swap — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101010; color: #f2f2ee; padding: 8vh 6vw; }
+  h1 { font-size: clamp(1.6rem, 4vw, 3rem); margin-bottom: .5rem; }
+  p.sub { color: #888; margin-bottom: 3rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
+  .swap { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 1; cursor: pointer; background: #1a1a1a; outline: none; border: 0; padding: 0; }
+  .layer { position: absolute; inset: 0; transition: opacity .35s ease, transform .6s cubic-bezier(.22,1,.36,1); display: grid; place-content: center; font-size: 4rem; }
+  /* 用渐变+emoji 模拟 base/hover 两张图;真实项目里是两个 <img> */
+  .base  { background: radial-gradient(circle at 30% 30%, #333, #151515); }
+  .hover-l { opacity: 0; background: radial-gradient(circle at 70% 70%, #c5f542, #2a4a00); }
+  @media (hover: hover) {
+    .swap:hover .hover-l, .swap:focus-visible .hover-l { opacity: 1; }
+    .swap:hover .layer, .swap:focus-visible .layer { transform: scale(1.05); }
+  }
+  @media (hover: none) { /* 触屏:点击切换 */
+    .swap.on .hover-l { opacity: 1; }
+  }
+  figcaption { display: flex; justify-content: space-between; margin-top: .6rem; color: #999; font-size: .85rem; }
+  figcaption b { color: #c5f542; }
+  @media (prefers-reduced-motion: reduce) { .layer { transition: opacity .35s ease; } .swap:hover .layer { transform: none; } }
+</style>
+</head>
+<body>
+  <h1>Hover 双图切换</h1>
+  <p class="sub">悬停(或触屏点击)看"同一物体的另一面" — Lando 头盔画廊手法</p>
+  <div class="grid">
+    <figure><button class="swap" aria-label="Season 2025"><div class="layer base">⛑️</div><div class="layer hover-l">🏆</div></button><figcaption><span>Season</span><b>2025</b></figcaption></figure>
+    <figure><button class="swap" aria-label="Discoball 2025"><div class="layer base">🪩</div><div class="layer hover-l">✨</div></button><figcaption><span>Discoball</span><b>2025</b></figcaption></figure>
+    <figure><button class="swap" aria-label="Japan 2024"><div class="layer base">🗻</div><div class="layer hover-l">🌸</div></button><figcaption><span>Japan</span><b>2024</b></figcaption></figure>
+    <figure><button class="swap" aria-label="Chrome 2023"><div class="layer base">🔩</div><div class="layer hover-l">🪞</div></button><figcaption><span>Chrome</span><b>2023</b></figcaption></figure>
+  </div>
+<script>
+  // 触屏降级:tap 切换
+  if (matchMedia('(hover: none)').matches) {
+    document.querySelectorAll('.swap').forEach(el =>
+      el.addEventListener('click', () => el.classList.toggle('on')));
+  }
+</script>
+</body>
+</html>

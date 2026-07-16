@@ -5,3 +5,4 @@
 | 效果 | 难度 | Demo |
 |---|---|---|
 | [滚动渐显 Scroll Reveal](scroll-reveal/) | ★ | [demo](scroll-reveal/demo.html) |
+| [横向滚动画廊](horizontal-gallery/) | ★★ | [demo](horizontal-gallery/demo.html) |

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVG Line Draw — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #0d0d0d; color: #f2f2ee; }
+  section { min-height: 100vh; display: grid; place-content: center; text-align: center; padding: 10vh 6vw; }
+  h1 { font-size: clamp(1.6rem, 4vw, 3rem); margin-bottom: 2rem; }
+  .hint { color: #777; }
+  svg { width: min(80vw, 640px); height: auto; overflow: visible; }
+  .draw { fill: none; stroke: #c5f542; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .draw.thin { stroke: #42d7f5; stroke-width: 2; }
+  @media (prefers-reduced-motion: reduce) { .draw { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; transition: none !important; } }
+</style>
+</head>
+<body>
+  <section><div><h1>往下滚,看线条被画出来</h1><p class="hint">stroke-dasharray + dashoffset ↓</p></div></section>
+
+  <section>
+    <svg viewBox="0 0 640 360" aria-label="被逐笔画出的示意图形">
+      <!-- 一条"赛道" -->
+      <path class="draw" d="M60,300 C60,180 180,120 320,140 C460,160 560,120 580,60 C590,30 550,20 520,40 C420,110 220,90 140,180 C90,235 140,300 240,300 L520,300" />
+      <!-- 一颗星 -->
+      <path class="draw thin" d="M320,190 L338,225 L378,231 L349,259 L356,298 L320,280 L284,298 L291,259 L262,231 L302,225 Z" />
+      <!-- 下划线 -->
+      <path class="draw" d="M200,330 C280,345 360,345 440,330" />
+    </svg>
+  </section>
+
+  <section><div><h1>画完即成品</h1><p class="hint">签名、logo、路线图 —— 同一招</p></div></section>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const paths = document.querySelectorAll('.draw');
+  if (!reduced) {
+    paths.forEach(p => {
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = len;
+      p.style.strokeDashoffset = len;
+    });
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const ps = e.target.querySelectorAll('.draw');
+      ps.forEach((p, i) => {
+        p.style.transition = `stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1) ${i * 0.5}s`;
+        p.style.strokeDashoffset = 0;
+      });
+      io.unobserve(e.target);
+    }), { threshold: 0.4 });
+    document.querySelectorAll('svg').forEach(s => io.observe(s));
+  }
+</script>
+</body>
+</html>
