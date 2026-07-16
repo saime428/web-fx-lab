@@ -50,4 +50,25 @@
 | [Messenger](https://messenger.abeto.co/) | 5.7MB 多人小星球游戏 | — | [拆解](cases/messenger/analysis.md) |
 | [Lando Norris](https://landonorris.com/) | Webflow+Rive+GSAP 拿 SOTM | — | [拆解](cases/lando-norris/analysis.md) |
 | [Anime.js](https://animejs.com/) | 文档即演示,stagger 网格 | ✅ [源码](https://github.com/juliangarnier/anime) | [拆解](cases/animejs/analysis.md) |
-| [Robin Payot](https://robinpayot.com/) | 滚动=3D
+| [Robin Payot](https://robinpayot.com/) | 滚动=3D 镜头推进 | — | [拆解](cases/robin-payot/analysis.md) |
+| [Active Theory](https://activetheory.net/) | 自研引擎全 canvas UI | — | [拆解](cases/active-theory/analysis.md) |
+| [Shopify Editions W26](https://www.shopify.com/editions/winter2026) | 发布说明做成滚动叙事 | — | [拆解](cases/shopify-editions-winter-26/analysis.md) |
+| [Hashgraph Ventures](https://hashgraphvc.com/) | 章节宣言叙事+氛围音 | — | [拆解](cases/hashgraph-ventures/analysis.md) |
+| [infinite imaginations](https://oninross.github.io/infinite-imaginations/) | TweenMax 时代考古 | ✅ [源码](https://github.com/oninross/infinite-imaginations) | [拆解](cases/infinite-imaginations/analysis.md) |
+
+## 模板与规范
+
+- 网站拆解:[`docs/templates/case-analysis.md`](docs/templates/case-analysis.md)
+- 效果条目:[`docs/templates/pattern.md`](docs/templates/pattern.md)
+- 常用技术雷达:[`docs/tech-radar.md`](docs/tech-radar.md)
+- 提炼与收录标准:[`docs/criteria.md`](docs/criteria.md)
+
+## 收录标准
+
+1. 效果必须能说清"为什么好看"(设计意图),不只是"看着炫"。
+2. Demo 尽量零依赖、单文件、双击可打开;确需库时在文档中注明版本。
+3. 每个 pattern 标注:核心技术、性能注意点、可访问性影响(如 `prefers-reduced-motion`)。
+
+## License
+
+MIT

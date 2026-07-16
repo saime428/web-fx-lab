@@ -1,0 +1,60 @@
+# 交接文档 HANDOVER
+
+> 给下一个接手者(人或 AI 会话)。读完这份 + `docs/criteria.md`,就能按同样口径继续干活。
+
+## 一、这个仓库是什么
+
+炫酷网页效果沉淀库。输入是"看着很好看的网站 URL",输出是两类资产:
+
+- `cases/<站名>/analysis.md` —— 按网站拆解:气质来源、效果清单(含 ✅ 标记)、技术栈侦察、借鉴笔记
+- `patterns/<分类>/<效果名>/` —— 按效果沉淀:README(设计意图/核心机制/实现要点/代价)+ 零依赖单文件 demo.html
+
+**cases 是矿,patterns 是提炼出的金属。** 效果清单里标 ✅ 的就是待提炼项。
+
+## 二、当前状态(2026-07-15)
+
+- 10 个 case(见 README 索引),其中 Igloo、Active Theory 做过 Chrome 运行时实测(结论在各自 analysis.md 的"运行时实测"一节)
+- 10 个 pattern,全部零依赖、过了 node --check 和链接检查
+- 已推 GitHub 并开通 Pages
+
+### 未完成(按优先级)
+
+1. **README 的 demo 链接改成 Pages 在线链接**——仓库页里点 demo.html 只能看源码,加上 `https://<user>.github.io/web-fx-lab/` 前缀才能直接玩
+2. 剩余两个高门槛 ✅:GPU 粒子过渡(Active Theory,可做简化版)、shader 驱动 UI 过渡(Igloo)
+3. Messenger、Shopify Editions 还没做运行时深挖(方法见下)
+4. cases/_example 占位可删
+
+## 三、工作流(新网站进来时)
+
+1. `web_fetch` 抓 HTML:看 meta、script src、CDN 特征(website-files=Webflow、cdn.sanity=Sanity、/media/pages/=Kirby)
+2. 抓不到内容(纯客户端渲染)→ 用 Chrome 打开真实页面注入 JS 探测:
+   - 全局变量试探:`window.THREE / gsap / Hydra / anime`
+   - `performance.getEntriesByType('resource')` 看资源清单(chunk 名、纹理格式、体积)
+   - fetch 主 bundle 后正则数特征:`WebGLRenderer`、`void main(` 计数、`Lenis` 等
+3. 搜 Awwwards/FWA/Codrops 拿制作方、官方 case study、开源仓库地址
+4. 按 `docs/templates/case-analysis.md` 写入 `cases/`,效果清单逐条按 `docs/criteria.md` 四条标准标 ✅/☐
+5. ✅ 项按 `docs/templates/pattern.md` 做成 pattern(README + demo)
+6. 更新三处索引:根 README 两张表 + 对应分类 `patterns/<分类>/README.md`
+7. 验证(JS 语法 + 相对链接存在性)→ commit → push
+
+## 四、硬性规范
+
+- demo 必须:零依赖、单文件、双击可开、`prefers-reduced-motion` 降级、hover 类效果给触屏和键盘(`:focus-visible`)留降级
+- 目录名一律 kebab-case;文档中文,代码注释可中英混排
+- 颜色走 CSS 变量;动画只碰 transform/opacity
+- commit message 风格:`cases: ...` / `patterns: ...` / `docs: ...`,一句话说清增量
+- 提炼口径以 `docs/criteria.md` 为准;要改口径,先改那份文档再干活
+
+## 五、已沉淀的关键认知(别重新发现一遍)
+
+- Igloo 顺滑的秘密:滚动动画数据预烘焙成 KTX2 数据纹理(scroll-datatexture),shader 按进度采样,运行时 O(1)
+- Active Theory 是自研 Hydra 引擎 + 8 Worker 线程 + 全 GL 渲染 UI(54 个 DOM 节点),属"上限路线",学过渡语言别学架构
+- Webflow + Rive + GSAP 也能拿 Awwwards SOTM(Lando Norris),炫酷 ≠ 必须手写工程
+- 声音必须用户手势解锁,所以 Enter 门/声音开关是技术必需包装成的仪式
+- 体积预算是设计约束:Messenger 全站 5.7MB 逼出了 cel-shading 风格化路线
+
+## 六、环境备注(Cowork 会话)
+
+- GitHub 连接器的工具在**会话开始时**注入,会话中途连接无效——没有就让用户开新会话
+- Chrome 插件需浏览器运行且侧边栏登录同账号,连不上时先查这两点
+- 纯客户端渲染站 web_fetch 只能拿壳,别浪费重试,直接走 Chrome 注入
