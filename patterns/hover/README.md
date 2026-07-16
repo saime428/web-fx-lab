@@ -4,4 +4,4 @@
 
 | 效果 | 难度 | Demo |
 |---|---|---|
-| [Hover 双图切换](image-swap/) | ★ | [demo](image-swap/demo.html) |
+| [Hover 双图切换](image-swap/) | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/hover/image-swap/demo.html) |

@@ -1,6 +1,8 @@
 # web-fx-lab 🧪
 
 > 炫酷网页效果沉淀库:把看到的好网站拆解成可复用的设计方法 + 可运行 Demo。
+>
+> 🔗 **在线 Demo**: https://saime428.github.io/web-fx-lab/ (所有 demo 链接均可直接点开试玩)
 
 ## 这个仓库怎么用
 
@@ -30,16 +32,16 @@
 
 | 效果 | 分类 | 难度 | Demo |
 |---|---|---|---|
-| [滚动渐显 Scroll Reveal](patterns/scroll/scroll-reveal/) | 滚动动效 | ★ | [demo](patterns/scroll/scroll-reveal/demo.html) |
-| [横向滚动画廊 Horizontal Gallery](patterns/scroll/horizontal-gallery/) | 滚动动效 | ★★ | [demo](patterns/scroll/horizontal-gallery/demo.html) |
-| [Hover 双图切换 Image Swap](patterns/hover/image-swap/) | 悬停交互 | ★ | [demo](patterns/hover/image-swap/demo.html) |
-| [SVG 线条绘制 Line Draw](patterns/text/svg-line-draw/) | 文字动效 | ★★ | [demo](patterns/text/svg-line-draw/demo.html) |
-| [滚动驱动 Shader](patterns/scroll/scroll-driven-shader/) | 滚动/WebGL | ★★★ | [demo](patterns/scroll/scroll-driven-shader/demo.html) |
-| [章节主题突变 Theme Shift](patterns/transitions/theme-shift/) | 页面切换 | ★ | [demo](patterns/transitions/theme-shift/demo.html) |
-| [章节式滚动叙事](patterns/layout/section-narrative/) | 布局手法 | ★ | [demo](patterns/layout/section-narrative/demo.html) |
-| [氛围音开关](patterns/loading/ambient-sound-toggle/) | 体验层 | ★★ | [demo](patterns/loading/ambient-sound-toggle/demo.html) |
-| [Stagger 网格波纹](patterns/text/stagger-grid/) | 编排 | ★ | [demo](patterns/text/stagger-grid/demo.html) |
-| [加载序章 Entry Preloader](patterns/loading/entry-preloader/) | 加载动画 | ★★ | [demo](patterns/loading/entry-preloader/demo.html) |
+| [滚动渐显 Scroll Reveal](patterns/scroll/scroll-reveal/) | 滚动动效 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/scroll/scroll-reveal/demo.html) |
+| [横向滚动画廊 Horizontal Gallery](patterns/scroll/horizontal-gallery/) | 滚动动效 | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/scroll/horizontal-gallery/demo.html) |
+| [Hover 双图切换 Image Swap](patterns/hover/image-swap/) | 悬停交互 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/hover/image-swap/demo.html) |
+| [SVG 线条绘制 Line Draw](patterns/text/svg-line-draw/) | 文字动效 | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/text/svg-line-draw/demo.html) |
+| [滚动驱动 Shader](patterns/scroll/scroll-driven-shader/) | 滚动/WebGL | ★★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/scroll/scroll-driven-shader/demo.html) |
+| [章节主题突变 Theme Shift](patterns/transitions/theme-shift/) | 页面切换 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/transitions/theme-shift/demo.html) |
+| [章节式滚动叙事](patterns/layout/section-narrative/) | 布局手法 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/layout/section-narrative/demo.html) |
+| [氛围音开关](patterns/loading/ambient-sound-toggle/) | 体验层 | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/loading/ambient-sound-toggle/demo.html) |
+| [Stagger 网格波纹](patterns/text/stagger-grid/) | 编排 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/text/stagger-grid/demo.html) |
+| [加载序章 Entry Preloader](patterns/loading/entry-preloader/) | 加载动画 | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/loading/entry-preloader/demo.html) |
 
 ## Case 索引
 

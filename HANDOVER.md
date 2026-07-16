@@ -19,7 +19,7 @@
 
 ### 未完成(按优先级)
 
-1. **README 的 demo 链接改成 Pages 在线链接**——仓库页里点 demo.html 只能看源码,加上 `https://<user>.github.io/web-fx-lab/` 前缀才能直接玩
+1. ~~README 的 demo 链接改成 Pages 在线链接~~ ✅ 已完成(https://saime428.github.io/web-fx-lab/)
 2. 剩余两个高门槛 ✅:GPU 粒子过渡(Active Theory,可做简化版)、shader 驱动 UI 过渡(Igloo)
 3. Messenger、Shopify Editions 还没做运行时深挖(方法见下)
 4. cases/_example 占位可删

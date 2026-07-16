@@ -4,5 +4,5 @@
 
 | 效果 | 难度 | Demo |
 |---|---|---|
-| [SVG 线条绘制](svg-line-draw/) | ★★ | [demo](svg-line-draw/demo.html) |
-| [Stagger 网格波纹](stagger-grid/) | ★ | [demo](stagger-grid/demo.html) |
+| [SVG 线条绘制](svg-line-draw/) | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/text/svg-line-draw/demo.html) |
+| [Stagger 网格波纹](stagger-grid/) | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/text/stagger-grid/demo.html) |

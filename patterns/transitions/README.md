@@ -4,4 +4,4 @@
 
 | 效果 | 难度 | Demo |
 |---|---|---|
-| [章节主题突变](theme-shift/) | ★ | [demo](theme-shift/demo.html) |
+| [章节主题突变](theme-shift/) | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/transitions/theme-shift/demo.html) |

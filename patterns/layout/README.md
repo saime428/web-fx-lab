@@ -4,4 +4,4 @@
 
 | 效果 | 难度 | Demo |
 |---|---|---|
-| [章节式滚动叙事](section-narrative/) | ★ | [demo](section-narrative/demo.html) |
+| [章节式滚动叙事](section-narrative/) | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/layout/section-narrative/demo.html) |
