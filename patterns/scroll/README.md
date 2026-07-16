@@ -6,3 +6,4 @@
 |---|---|---|
 | [滚动渐显 Scroll Reveal](scroll-reveal/) | ★ | [demo](scroll-reveal/demo.html) |
 | [横向滚动画廊](horizontal-gallery/) | ★★ | [demo](horizontal-gallery/demo.html) |
+| [滚动驱动 Shader](scroll-driven-shader/) | ★★★ | [demo](scroll-driven-shader/demo.html) |

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entry Preloader — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101010; color: #f2f2ee; }
+  .curtain { position: fixed; inset: 0; background: #060606; display: grid; place-content: center; text-align: center; z-index: 10; transition: clip-path 1s cubic-bezier(.7,0,.3,1); clip-path: inset(0 0 0 0); }
+  .curtain.open { clip-path: inset(0 0 100% 0); }
+  .pct { font-size: clamp(4rem, 18vw, 11rem); font-weight: 700; letter-spacing: -.04em; font-variant-numeric: tabular-nums; line-height: 1; }
+  .bar { width: min(50vw, 320px); height: 2px; background: #222; margin: 2rem auto 0; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: #c5f542; transform-origin: left; transform: scaleX(0); }
+  .enter { margin-top: 2.5rem; opacity: 0; pointer-events: none; transition: opacity .6s; background: none; border: 1px solid #c5f542; color: #c5f542; padding: .8em 2.6em; border-radius: 99px; font-size: 1rem; letter-spacing: .25em; cursor: pointer; }
+  .enter.ready { opacity: 1; pointer-events: auto; }
+  .enter:hover { background: #c5f542; color: #060606; }
+  main { height: 100vh; display: grid; place-content: center; text-align: center; }
+  h1 { font-size: clamp(2rem, 6vw, 4.5rem); }
+  main p { color: #888; margin-top: 1rem; }
+  @media (prefers-reduced-motion: reduce) { .curtain { transition: opacity .3s; } .curtain.open { opacity: 0; clip-path: none; pointer-events: none; } }
+</style>
+</head>
+<body>
+  <div class="curtain">
+    <div>
+      <div class="pct">0</div>
+      <div class="bar"><i></i></div>
+      <button class="enter">ENTER</button>
+    </div>
+  </div>
+  <main><div><h1>拉开幕布,内容已就绪</h1><p>进度 lerp → 100% 停一拍 → Enter 手势 → clip-path 退场</p></div></main>
+<script>
+  const pctEl = document.querySelector('.pct'), bar = document.querySelector('.bar i'),
+        enter = document.querySelector('.enter'), curtain = document.querySelector('.curtain');
+  // 模拟异步资源加载:8 个资源在随机时间点完成(真实项目替换为贴图/模型/字体加载)
+  let real = 0, shown = 0; const TOTAL = 8;
+  for (let i = 0; i < TOTAL; i++) setTimeout(() => real++, 300 + Math.random() * 2200);
+  (function loop() {
+    shown += (real / TOTAL * 100 - shown) * 0.06;          // 显示值缓动追真实值
+    if (shown > 99.5) shown = 100;
+    pctEl.textContent = Math.round(shown);
+    bar.style.transform = `scaleX(${shown / 100})`;
+    if (shown === 100) setTimeout(() => enter.classList.add('ready'), 300); // 停一拍
+    else requestAnimationFrame(loop);
+  })();
+  enter.addEventListener('click', () => {
+    curtain.classList.add('open');                          // 此手势也可顺便 new AudioContext()
+    setTimeout(() => curtain.remove(), 1100);
+  });
+</script>
+</body>
+</html>

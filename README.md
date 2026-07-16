@@ -34,6 +34,12 @@
 | [横向滚动画廊 Horizontal Gallery](patterns/scroll/horizontal-gallery/) | 滚动动效 | ★★ | [demo](patterns/scroll/horizontal-gallery/demo.html) |
 | [Hover 双图切换 Image Swap](patterns/hover/image-swap/) | 悬停交互 | ★ | [demo](patterns/hover/image-swap/demo.html) |
 | [SVG 线条绘制 Line Draw](patterns/text/svg-line-draw/) | 文字动效 | ★★ | [demo](patterns/text/svg-line-draw/demo.html) |
+| [滚动驱动 Shader](patterns/scroll/scroll-driven-shader/) | 滚动/WebGL | ★★★ | [demo](patterns/scroll/scroll-driven-shader/demo.html) |
+| [章节主题突变 Theme Shift](patterns/transitions/theme-shift/) | 页面切换 | ★ | [demo](patterns/transitions/theme-shift/demo.html) |
+| [章节式滚动叙事](patterns/layout/section-narrative/) | 布局手法 | ★ | [demo](patterns/layout/section-narrative/demo.html) |
+| [氛围音开关](patterns/loading/ambient-sound-toggle/) | 体验层 | ★★ | [demo](patterns/loading/ambient-sound-toggle/demo.html) |
+| [Stagger 网格波纹](patterns/text/stagger-grid/) | 编排 | ★ | [demo](patterns/text/stagger-grid/demo.html) |
+| [加载序章 Entry Preloader](patterns/loading/entry-preloader/) | 加载动画 | ★★ | [demo](patterns/loading/entry-preloader/demo.html) |
 
 ## Case 索引
 
@@ -44,13 +50,4 @@
 | [Messenger](https://messenger.abeto.co/) | 5.7MB 多人小星球游戏 | — | [拆解](cases/messenger/analysis.md) |
 | [Lando Norris](https://landonorris.com/) | Webflow+Rive+GSAP 拿 SOTM | — | [拆解](cases/lando-norris/analysis.md) |
 | [Anime.js](https://animejs.com/) | 文档即演示,stagger 网格 | ✅ [源码](https://github.com/juliangarnier/anime) | [拆解](cases/animejs/analysis.md) |
-| [Robin Payot](https://robinpayot.com/) | 滚动=3D 镜头推进 | — | [拆解](cases/robin-payot/analysis.md) |
-| [Active Theory](https://activetheory.net/) | 自研引擎全 canvas UI | — | [拆解](cases/active-theory/analysis.md) |
-| [Shopify Editions W26](https://www.shopify.com/editions/winter2026) | 发布说明做成滚动叙事 | — | [拆解](cases/shopify-editions-winter-26/analysis.md) |
-| [Hashgraph Ventures](https://hashgraphvc.com/) | 章节宣言叙事+氛围音 | — | [拆解](cases/hashgraph-ventures/analysis.md) |
-| [infinite imaginations](https://oninross.github.io/infinite-imaginations/) | TweenMax 时代考古 | ✅ [源码](https://github.com/oninross/infinite-imaginations) | [拆解](cases/infinite-imaginations/analysis.md) |
-
-## 模板
-
-- 网站拆解:[`docs/templates/case-analysis.md`](docs/templates/case-analysis.md)
-- 效果条目:[`docs/templat
+| [Robin Payot](https://robinpayot.com/) | 滚动=3D

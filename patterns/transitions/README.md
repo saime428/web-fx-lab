@@ -4,3 +4,4 @@
 
 | 效果 | 难度 | Demo |
 |---|---|---|
+| [章节主题突变](theme-shift/) | ★ | [demo](theme-shift/demo.html) |
