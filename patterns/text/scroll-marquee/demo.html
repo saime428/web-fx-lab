@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Marquee — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101014; color: #ecebf2; }
+  header, footer { height: 100vh; display: grid; place-content: center; text-align: center; }
+  p { color: #77778a; margin-top: .6rem; }
+  .marquee { overflow: hidden; white-space: nowrap; padding: 1.2rem 0; border-top: 1px solid #26262e; border-bottom: 1px solid #26262e; }
+  .track { display: inline-block; will-change: transform; }
+  .track b { font-size: clamp(2rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: .04em; padding-right: 1em; color: #8b7cf6; }
+  .track b:nth-child(even) { -webkit-text-stroke: 1.5px #8b7cf6; color: transparent; }
+  .m2 .track b { color: #ecebf2; }
+  .m2 .track b:nth-child(even) { -webkit-text-stroke: 1.5px #ecebf2; color: transparent; }
+  @media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } }
+</style>
+</head>
+<body>
+  <header>
+    <h1>往下滚,再往回滚</h1>
+    <p>字幕跟随你的滚动速度与方向</p>
+  </header>
+
+  <div class="marquee" aria-hidden="true"><div class="track" data-dir="1"></div></div>
+  <div class="marquee m2" aria-hidden="true"><div class="track" data-dir="-1"></div></div>
+
+  <footer><p>速度 = 基础爬行 + lerp(滚动增量)</p></footer>
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const WORDS = 'SCROLL MARQUEE · WEB FX LAB · '.repeat(3);
+  const tracks = [...document.querySelectorAll('.track')].map(el => {
+    // 内容两份接龙,对单份宽度取模 → 无缝
+    el.innerHTML = (`<b>${WORDS}</b>`).repeat(2);
+    return { el, x: 0, dir: +el.dataset.dir, half: 0 };
+  });
+  const measure = () => tracks.forEach(t => t.half = t.el.scrollWidth / 2);
+  measure(); addEventListener('resize', measure);
+
+  if (!reduced) {
+    let lastY = scrollY, target = 0, vel = 0, running = true;
+    addEventListener('scroll', () => { target += scrollY - lastY; lastY = scrollY; });
+    document.addEventListener('visibilitychange', () => {
+      running = !document.hidden;
+      if (running) requestAnimationFrame(tick);   // 后台不空转
+    });
+    function tick() {
+      vel += (target - vel) * 0.08;               // lerp:惯性/拖尾
+      target *= 0.9;                              // 停手后回落到基础速度
+      tracks.forEach(t => {
+        t.x = (t.x + t.dir * (0.8 + vel * 0.25)) % t.half;
+        if (t.x < 0) t.x += t.half;               // 负速度取模拉回
+        t.el.style.transform = `translate3d(${-t.x}px,0,0)`;
+      });
+      if (running) requestAnimationFrame(tick);
+    }
+    tick();
+  }
+</script>
+</body>
+</html>

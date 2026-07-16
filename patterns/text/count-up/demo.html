@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Count Up — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101014; color: #ecebf2; }
+  header { height: 100vh; display: grid; place-content: center; text-align: center; }
+  header p { color: #77778a; margin-top: .6rem; }
+  .stats { min-height: 80vh; display: grid; place-content: center; gap: 3rem; grid-template-columns: repeat(auto-fit, minmax(180px, max-content)); padding: 10vh 6vw; }
+  .stat { text-align: center; }
+  .num { font-size: clamp(2.6rem, 8vw, 5rem); font-weight: 800; color: #8b7cf6; font-variant-numeric: tabular-nums; /* 等宽数字,布局不抖 */ }
+  .label { color: #77778a; margin-top: .4rem; }
+  footer { height: 50vh; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>数字滚动</h1>
+    <p>往下滚,统计数字进视口才开始涨</p>
+  </header>
+  <div class="stats">
+    <div class="stat"><div class="num" data-target="150" data-suffix="+">0</div><div class="label">产品更新</div></div>
+    <div class="stat"><div class="num" data-target="98276">0</div><div class="label">行代码</div></div>
+    <div class="stat"><div class="num" data-target="99" data-suffix="%">0</div><div class="label">性能得分</div></div>
+  </div>
+  <footer></footer>
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fmt = new Intl.NumberFormat('zh-CN');
+  const ease = t => 1 - Math.pow(1 - t, 3);                  // easeOutCubic:结尾咬合到位
+  function countUp(el, dur = 1600) {
+    const target = +el.dataset.target, suffix = el.dataset.suffix || '';
+    if (reduced) { el.textContent = fmt.format(target) + suffix; return; }
+    const t0 = performance.now();
+    (function frame(now) {
+      const t = Math.min((now - t0) / dur, 1);
+      el.textContent = fmt.format(Math.round(target * ease(t))) + suffix;
+      if (t < 1) requestAnimationFrame(frame);
+    })(t0);
+  }
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { countUp(e.target); io.unobserve(e.target); }  // 只播一次
+  }), { threshold: .6 });
+  document.querySelectorAll('.num').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

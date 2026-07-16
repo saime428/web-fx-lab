@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Transitions — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101014; color: #ecebf2; min-height: 100vh; padding: 8vh 6vw; }
+  h1 { margin-bottom: .4rem; }
+  .hint { color: #77778a; margin-bottom: 2.5rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; max-width: 640px; }
+  .card { border: none; padding: 0; border-radius: 14px; aspect-ratio: 1; cursor: pointer; font: inherit; color: #101014; font-weight: 800; font-size: 1.2rem; display: grid; place-content: center; }
+  .card:focus-visible { outline: 2px solid #ecebf2; outline-offset: 3px; }
+  /* 详情视图 */
+  .detail { max-width: 640px; }
+  .hero { border-radius: 20px; height: min(52vh, 380px); display: grid; place-content: center; color: #101014; font-weight: 800; font-size: 3rem; }
+  .back { margin-top: 1.5rem; background: none; border: 1px solid #3a3a46; color: #ecebf2; padding: .6em 1.6em; border-radius: 2em; font: inherit; cursor: pointer; }
+  .back:hover, .back:focus-visible { border-color: #8b7cf6; outline: none; }
+  /* 共享元素的补间曲线可自定义 */
+  ::view-transition-old(hero), ::view-transition-new(hero) { animation-duration: .45s; }
+</style>
+</head>
+<body>
+  <div id="app"></div>
+<script>
+  const COLORS = ['#8b7cf6', '#e8ff47', '#ff7c5c', '#47d8ff', '#7cf6a8', '#f67cd4'];
+  const app = document.getElementById('app');
+
+  function renderGrid() {
+    app.innerHTML = `<h1>View Transitions</h1>
+      <p class="hint">点一张卡:它"长大"成详情页主图,而不是换页</p>
+      <div class="grid">` +
+      COLORS.map((c, i) => `<button class="card" style="background:${c}" data-i="${i}">${i + 1}</button>`).join('') +
+      `</div>`;
+  }
+  function renderDetail(i) {
+    app.innerHTML = `<div class="detail">
+      <div class="hero" style="background:${COLORS[i]}">${i + 1}</div>
+      <button class="back">← 返回列表</button>
+    </div>`;
+    app.querySelector('.hero').style.viewTransitionName = 'hero';   // 新视图的同名元素
+    app.querySelector('.back').focus();
+  }
+  // 核心:老元素标 name → startViewTransition 里改 DOM → 新元素标同名
+  function go(update, taggedEl) {
+    if (!document.startViewTransition) { update(); return; }        // 渐进增强:不支持就直接切
+    if (taggedEl) taggedEl.style.viewTransitionName = 'hero';
+    document.startViewTransition(update);
+  }
+  app.addEventListener('click', e => {
+    const card = e.target.closest('.card');
+    if (card) go(() => renderDetail(+card.dataset.i), card);
+    if (e.target.closest('.back')) go(renderGrid);
+  });
+  renderGrid();
+</script>
+</body>
+</html>

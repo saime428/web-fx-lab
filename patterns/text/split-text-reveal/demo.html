@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Split Text Reveal — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101014; color: #ecebf2; min-height: 100vh; display: grid; place-content: center; text-align: center; padding: 6vh 4vw; }
+  .hint { color: #77778a; margin: 2.2rem 0; }
+  /* —— 逐行:外层遮罩 + 内层升起 —— */
+  .lines { font-size: clamp(1.6rem, 5.5vw, 3.2rem); font-weight: 700; line-height: 1.25; }
+  .line { display: block; overflow: hidden; }
+  .line > span { display: block; transform: translateY(115%) rotate(2deg); }
+  .show .line > span { transform: none; transition: transform .9s cubic-bezier(.22,1,.36,1); }
+  /* —— 逐字:索引换延迟 —— */
+  .chars { font-size: clamp(1.1rem, 3.5vw, 1.6rem); letter-spacing: .12em; color: #8b7cf6; margin-top: 1.4rem; }
+  .chars span { display: inline-block; opacity: 0; transform: translateY(.6em); }
+  .show .chars span { opacity: 1; transform: none; transition: .6s cubic-bezier(.22,1,.36,1); }
+  button { margin-top: 3rem; background: none; border: 1px solid #3a3a46; color: #ecebf2; padding: .6em 1.6em; border-radius: 2em; font: inherit; cursor: pointer; }
+  button:hover, button:focus-visible { border-color: #8b7cf6; outline: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .line > span, .chars span { transform: none !important; opacity: 1 !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="stage show" id="stage">
+    <h1 class="lines" aria-label="文字不是出现,而是到场">
+      <!-- 零依赖场景:手工分行,比 JS 量换行位置更稳 -->
+      <span class="line"><span>文字不是出现,</span></span>
+      <span class="line"><span>而是到场。</span></span>
+    </h1>
+    <p class="chars" id="chars" aria-label="SPLIT TEXT REVEAL"></p>
+    <p class="hint">逐行 = 遮罩升起 · 逐字 = 索引换延迟</p>
+    <button id="replay">重播</button>
+  </div>
+<script>
+  // 逐字拆分:原文放 aria-label,span 层对读屏隐藏
+  const chars = document.getElementById('chars'), stage = document.getElementById('stage');
+  const text = chars.getAttribute('aria-label');
+  [...text].forEach((ch, i) => {
+    const s = document.createElement('span');
+    s.textContent = ch === ' ' ? ' ' : ch;
+    s.setAttribute('aria-hidden', 'true');
+    s.style.transitionDelay = `${300 + i * 28}ms`;   // 行动画先走,字随后
+    chars.appendChild(s);
+  });
+  document.querySelectorAll('.line > span').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 110}ms`;
+  });
+  function play() {
+    stage.classList.remove('show');
+    void stage.offsetWidth;                          // 强制 reflow 重置过渡
+    stage.classList.add('show');
+  }
+  document.getElementById('replay').addEventListener('click', play);
+  // 真实页面里用 IntersectionObserver 触发,进视口才播:
+  // new IntersectionObserver(([e]) => e.isIntersecting && play(), { threshold: .4 }).observe(stage)
+  play();
+</script>
+</body>
+</html>

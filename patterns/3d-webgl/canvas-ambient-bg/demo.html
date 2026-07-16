@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas Ambient Background — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #0b0b10; color: #ecebf2; min-height: 100vh; display: grid; place-content: center; text-align: center; padding: 6vh 4vw; }
+  canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+  h1 { font-size: clamp(1.8rem, 6vw, 3.4rem); font-weight: 800; }
+  p { color: #9a99ad; margin-top: .8rem; max-width: 36em; }
+</style>
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div>
+    <h1>内容后面有一层光</h1>
+    <p>三个径向渐变圆斑 + lighter 叠加 + 互质正弦漂移。没有 WebGL,没有噪声库,没有依赖。</p>
+  </div>
+<script>
+  const cv = document.getElementById('bg'), ctx = cv.getContext('2d');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h;
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);   // 移动端封顶,省电
+    w = cv.width = innerWidth * dpr; h = cv.height = innerHeight * dpr;
+    cv.style.width = innerWidth + 'px'; cv.style.height = innerHeight + 'px';
+  }
+  resize(); addEventListener('resize', () => { resize(); if (reduced) draw(9); });
+
+  // 互质的正弦频率 → 轨迹永不重复
+  const blobs = [
+    { fx: .30, fy: .35, r: .55, sx: .00023, sy: .00017, p: 0,   ax: .18, ay: .12, color: 'rgba(139,124,246,.55)' },
+    { fx: .72, fy: .60, r: .48, sx: .00019, sy: .00029, p: 2.1, ax: .15, ay: .16, color: 'rgba(71,216,255,.35)' },
+    { fx: .50, fy: .85, r: .60, sx: .00013, sy: .00021, p: 4.4, ax: .20, ay: .10, color: 'rgba(255,124,92,.28)' },
+  ];
+  function draw(t) {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#0b0b10'; ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = 'lighter';           // 重叠处颜色相加 → 发光
+    blobs.forEach(b => {
+      const x = (b.fx + Math.sin(t * b.sx + b.p) * b.ax) * w;
+      const y = (b.fy + Math.cos(t * b.sy + b.p) * b.ay) * h;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, b.r * Math.max(w, h));
+      g.addColorStop(0, b.color); g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    });
+  }
+  if (reduced) { draw(9); }                             // 静态一帧,光斑还在,只是不动
+  else {
+    let running = true;
+    document.addEventListener('visibilitychange', () => {
+      running = !document.hidden;
+      if (running) requestAnimationFrame(loop);         // 后台不空转
+    });
+    function loop(t) { draw(t); if (running) requestAnimationFrame(loop); }
+    requestAnimationFrame(loop);
+  }
+</script>
+</body>
+</html>

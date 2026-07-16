@@ -42,6 +42,15 @@
 | [氛围音开关](patterns/loading/ambient-sound-toggle/) | 体验层 | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/loading/ambient-sound-toggle/demo.html) |
 | [Stagger 网格波纹](patterns/text/stagger-grid/) | 编排 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/text/stagger-grid/demo.html) |
 | [加载序章 Entry Preloader](patterns/loading/entry-preloader/) | 加载动画 | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/loading/entry-preloader/demo.html) |
+| [逐行/逐字拆分入场 Split Text](patterns/text/split-text-reveal/) | 文字动效 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/text/split-text-reveal/demo.html) |
+| [滚动响应字幕 Scroll Marquee](patterns/text/scroll-marquee/) | 文字动效 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/text/scroll-marquee/demo.html) |
+| [数字滚动 Count Up](patterns/text/count-up/) | 文字动效 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/text/count-up/demo.html) |
+| [粘性堆叠 Sticky Stack](patterns/layout/sticky-stack/) | 布局手法 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/layout/sticky-stack/demo.html) |
+| [注释风标题 Comment Heading](patterns/layout/comment-heading/) | 布局手法 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/layout/comment-heading/demo.html) |
+| [视差漂浮卡片 Parallax Cards](patterns/scroll/parallax-cards/) | 滚动动效 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/scroll/parallax-cards/demo.html) |
+| [CSS 滚动擦洗 Scroll Scrub](patterns/scroll/css-scroll-scrub/) | 滚动动效 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/scroll/css-scroll-scrub/demo.html) |
+| [View Transitions 共享元素过渡](patterns/transitions/view-transitions/) | 页面切换 | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/transitions/view-transitions/demo.html) |
+| [Canvas 氛围背景 Ambient BG](patterns/3d-webgl/canvas-ambient-bg/) | 3D/WebGL | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/3d-webgl/canvas-ambient-bg/demo.html) |
 
 ## Case 索引
 

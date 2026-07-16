@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Scroll Scrub — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101014; color: #ecebf2; }
+  header, footer { height: 90vh; display: grid; place-content: center; text-align: center; }
+  header p, footer p { color: #77778a; margin-top: .6rem; }
+  .no-support { display: none; color: #ff7c5c; }
+  /* 全局进度条:scroll() 时间轴 */
+  .progress { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: #8b7cf6; transform-origin: left; transform: scaleX(0); z-index: 9; }
+  .cards { max-width: 560px; margin: 0 auto; padding: 0 6vw 10vh; display: grid; gap: 22vh; }
+  .card { border-radius: 20px; padding: 3rem 2rem; background: #1b1b22; border: 1px solid #2b2b35; }
+  .card h2 { color: #8b7cf6; margin-bottom: .5rem; }
+  .card p { color: #9a99ad; line-height: 1.7; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      .progress { animation: grow linear; animation-timeline: scroll(); }
+      /* 每张卡:view() 时间轴,进度=自己在视口中的位置,可倒放 */
+      .card { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
+    }
+  }
+  @supports not (animation-timeline: scroll()) { .no-support { display: block; } }
+  @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes reveal { from { opacity: 0; transform: translateY(60px) scale(.92); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <header>
+    <h1>CSS 滚动擦洗</h1>
+    <p>顶部进度条 + 卡片入场,全部由滚动条驱动——0 行 JS</p>
+    <p class="no-support">当前浏览器不支持 animation-timeline,页面退回静态(这就是降级)</p>
+  </header>
+  <div class="cards">
+    <div class="card"><h2>scroll()</h2><p>顶部进度条的时间轴是"整页滚了多少"。往回滚,它也回去——scrub 的意思就是动画进度可倒放。</p></div>
+    <div class="card"><h2>view()</h2><p>这张卡的时间轴是"我自己在视口中的位置"。animation-range: entry 0% cover 45% 决定映射区间。</p></div>
+    <div class="card"><h2>linear</h2><p>keyframes 一律 linear:缓动感来自你的手速,预设 easing 会跟它打架。</p></div>
+    <div class="card"><h2>渐进增强</h2><p>整套包在 @supports 和 prefers-reduced-motion 里,不支持 = 静态排版,无伤。</p></div>
+  </div>
+  <footer><p>动画进度 = 滚动进度</p></footer>
+</body>
+</html>

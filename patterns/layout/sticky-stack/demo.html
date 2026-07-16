@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sticky Stack — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101014; color: #ecebf2; }
+  header { height: 90vh; display: grid; place-content: center; text-align: center; }
+  header p { color: #77778a; margin-top: .6rem; }
+  .stack { padding: 0 4vw 20vh; }
+  .card {
+    position: sticky; top: 0;                /* 核心就这一行 */
+    min-height: 92svh; margin-bottom: 4rem;
+    border-radius: 24px; padding: clamp(1.5rem, 5vw, 4rem);
+    display: flex; flex-direction: column; justify-content: end;
+    transform-origin: top center; will-change: transform, filter;
+  }
+  .card:nth-child(1) { background: #8b7cf6; color: #14101f; top: 0rem; }
+  .card:nth-child(2) { background: #e8ff47; color: #1a1c08; top: 2rem; }
+  .card:nth-child(3) { background: #ff7c5c; color: #240f08; top: 4rem; }
+  .card:nth-child(4) { background: #47d8ff; color: #06202a; top: 6rem; }
+  .card h2 { font-size: clamp(2rem, 7vw, 4rem); font-weight: 800; }
+  .card p { opacity: .7; max-width: 32em; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>粘性堆叠</h1>
+    <p>往下滚:后到的卡片压住先来的</p>
+  </header>
+  <div class="stack" id="stack">
+    <section class="card"><h2>01 · Sticky</h2><p>每张卡 position: sticky; top: 0——布局层面就完成了堆叠,JS 一行都不需要。</p></section>
+    <section class="card"><h2>02 · 覆盖</h2><p>DOM 顺序天然决定层叠,后来者居上,z-index 不用管。</p></section>
+    <section class="card"><h2>03 · 增强</h2><p>被盖住的卡片轻微缩小变暗,是 JS 读下一张卡的进场进度算出来的——去掉也成立。</p></section>
+    <section class="card"><h2>04 · 阶梯</h2><p>top 依次 +2rem,牌堆的"边"就露出来了。</p></section>
+  </div>
+<script>
+  // 增强层:下一张卡进场进度 → 上一张缩小变暗(reduced-motion 跳过)
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const cards = [...document.querySelectorAll('.card')];
+    let ticking = false;
+    function update() {
+      ticking = false;
+      cards.forEach((card, i) => {
+        const next = cards[i + 1];
+        if (!next) return;
+        const p = Math.min(Math.max(1 - next.getBoundingClientRect().top / innerHeight, 0), 1);
+        card.style.transform = `scale(${1 - p * 0.06})`;
+        card.style.filter = `brightness(${1 - p * 0.25})`;
+      });
+    }
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  }
+</script>
+</body>
+</html>
