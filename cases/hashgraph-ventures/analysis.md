@@ -16,8 +16,8 @@
 |---|---|---|---|---|
 | 1 | 章节式滚动叙事(编号+进退导航) | scroll/layout | 滚动状态机或全屏分节 | ✅ |
 | 2 | 全局氛围音 + 开关 | loading | Web Audio API,手势后播放 | ✅ |
-| 3 | 大标题断行强调排版(词组拆行) | text/layout | 排版 + 入场动画 | ☐ |
-| 4 | 背景生成式视觉(推测 WebGL) | 3d-webgl | 待 DevTools 验证 | ☐ |
+| 3 | 大标题断行强调排版(词组拆行) | text/layout | text-splitter 逐行/逐字入场 | ✅ |
+| 4 | 背景生成式视觉 | 3d-webgl | 全屏 2D canvas(实测确认) | ✅ |
 
 ## 技术栈侦察
 
@@ -28,3 +28,11 @@
 ## 借鉴笔记
 
 金融/机构类客户的"炫酷"要克制:编号章节+宣言文案+氛围音,不需要重 3D 也有高级感。适合 B 端项目参考。
+
+## 运行时实测(浏览器注入探测,2026-07-16)
+
+- Nuxt(hash chunk + `_payload.json`),无全局动画库
+- **背景生成式视觉验证**:全屏 2D canvas(`touch-action: none`),不是 WebGL;另有一个隐藏的 400×300 WebGL canvas 未参与主视觉 → 2D canvas 生成背景零依赖可复现
+- **章节叙事的实现是 fixed 叠放**:`home-hero` / `home-investors` / `home-portfolio` 全是 `fixed-section`,滚动状态机控制显隐——和 scroll-snap 是两种流派,section-narrative pattern 可补这一节
+- 文字入场:`text-splitter` / `text-splitter--splitted` / `anim-line` / `home-team-member__char`(逐行+逐字都有)
+- 固定层:sound-toggle、back-button、nav-prev-next 常驻,构成"体验感"的壳

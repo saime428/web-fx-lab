@@ -17,7 +17,9 @@
 | 1 | 全页滚动驱动章节叙事 | scroll | 滚动进度编排 + 章节 pin | ✅ |
 | 2 | 可交互漂浮元素(气泡/贴纸) | hover | 物理感 hover + 拖拽 | ☐ |
 | 3 | 章节主题切换(配色/风格突变) | transitions | 滚动触发主题变量切换 | ✅ |
-| 4 | 内嵌产品 UI 动画演示 | layout | 视频/Lottie/实时 DOM | ☐ |
+| 4 | 内嵌产品 UI 动画演示 | layout | 12 个 video(实测确认) | ☐ |
+| 5 | 视差漂浮卡片 | scroll | 不同滚动速率 translate | ✅ |
+| 6 | 数字滚动 counter | text | IntersectionObserver + rAF | ✅ |
 
 ## 技术栈侦察
 
@@ -28,3 +30,10 @@
 ## 借鉴笔记
 
 "产品发布页做成叙事长卷"是 B 端内容炫酷化的最佳范式;章节主题突变(配色整体翻转)是低成本高感知的手法。
+
+## 运行时实测(浏览器注入探测,2026-07-16)
+
+- 无全局动画库(React + Tailwind 打包),2 canvas + 12 video + 40 个 SVG SMIL 动画(`<animate>`)
+- 主题切换是**三层 data 属性**:`data-nav-theme` / `data-sidebar-theme` / `data-title-theme`,导航、侧栏、标题各自跟随章节换肤——比单一根变量更细,可反哺 theme-shift pattern 文档
+- `cloud-card-parallax`(视差漂浮卡片)、`counter`(数字滚动)是清单外新发现
+- 内嵌产品演示的实现比预想朴素:就是 video,没有 Lottie/实时 DOM

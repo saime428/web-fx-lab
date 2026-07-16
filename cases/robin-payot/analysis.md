@@ -17,7 +17,8 @@
 | 1 | 滚动驱动 3D 场景推进 | scroll / 3d-webgl | Three.js + 滚动进度映射相机 | ✅ |
 | 2 | Wind Waker 风格水面 shader | 3d-webgl | GLSL 自定义 shader | ☐ |
 | 3 | 进入动画 "Enter" 序章(带声音授权) | loading | 用户手势后启动 AudioContext | ✅ |
-| 4 | 项目画廊 3D 过渡 | transitions | WebGL 纹理过渡 | ☐ |
+| 4 | 项目画廊 3D 过渡 | transitions | WebGL displacement 纹理过渡 | ✅(简化版) |
+| 5 | 逐字入场标题 | text | split-text 逐字 stagger | ✅ |
 
 ## 技术栈侦察
 
@@ -28,3 +29,9 @@
 ## 借鉴笔记
 
 "滚动=镜头推进"是 3D 作品集最通用的叙事骨架;声音需要用户手势触发,所以"Enter"按钮既是仪式感也是技术需要。
+
+## 运行时实测(浏览器注入探测,2026-07-16)
+
+- 整站仅 **110 个 DOM 节点**,一块 canvas 承载全部视觉——"canvas 为主、DOM 为壳"的典型
+- 文字入场:`split-text` / `split-text__letter`(逐字,含空格占位类),第三个实测到 split-text 的站
+- 无全局动画库暴露(打包内联);cookie 提示 + "Scroll to explore" + Enter 门是 DOM 层仅有的东西
