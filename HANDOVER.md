@@ -18,7 +18,7 @@
 - 已推 GitHub 并开通 Pages
 - 2026-07-16 口径调整:可复现性放宽为"保住核心机制的简化版即可",新增分类覆盖度排序项(见 docs/criteria.md)
 - 消费层已建:INDEX.md(AI 选型索引,含中文名列,新增/改 pattern 时**必须同步更新**,画廊自动跟上)+ skills/web-fx-lab/SKILL.md(Claude Code skill,装在 ~/.claude/skills/web-fx-lab/,改了记得重新复制过去)
-- 画廊首页 index.html 分四切片交付,当前进度:**切片 1 ✅**(fetch INDEX 渲染 21 卡、只读缩放 iframe 预览、点卡全屏、fetch 失败兜底、.nojekyll、修复根 404)。待做:切片 2 筛选+URL 状态(分类/难度/套餐互斥,`?cat=`/`?level=`/`?set=`)、切片 3 自动演示引擎(iframe 同源 contentWindow 正弦 scrollTo,检测=高度×1.5+scroll-snap 双查,snap 卡回退静态)、切片 4 狗粮化(split-text hero/ambient 背景/scroll-reveal 卡片入场)。规划中:纯 pattern 拼的样板间 landing page
+- 画廊首页 index.html 分四切片交付,当前进度:**切片 1 ✅**(fetch INDEX 渲染 21 卡、只读缩放 iframe 预览、点卡全屏、fetch 失败兜底、.nojekyll、修复根 404)、**切片 2+3 代码已写**(2:筛选 chips+URL 状态,`?cat=`/`?level=`/`?set=` 互斥,再点取消;3:自动演示引擎,iframe load capture 探测 scrollHeight+scroll-snap,余弦往复 scrollTo,只滚可见卡)。**均未浏览器验证和 commit**——当时环境的权限分类器故障挡了所有命令执行。接手先验证:本地静态服务开 index.html,断言 chips 渲染/筛选切换/URL 回放/滚动卡 scrollTop 在变(注意内嵌浏览器 rAF 节流,需垫片)。待做:切片 4 狗粮化(split-text hero/ambient 背景/scroll-reveal 卡片入场)。规划中:纯 pattern 拼的样板间 landing page
 
 ### 未完成(按优先级)
 

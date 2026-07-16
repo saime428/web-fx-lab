@@ -27,6 +27,13 @@
   .meta .cat { color: var(--dim); font-size: .82rem; }
   .meta .lv { margin-left: auto; color: var(--accent); font-size: .82rem; letter-spacing: .1em; white-space: nowrap; }
   .hintbar { color: var(--dim); font-size: .9rem; padding-bottom: 2rem; }
+  /* 筛选条 */
+  .filters { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); padding: .9rem 0 1rem; margin-bottom: 1.4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  .filters .sep { color: var(--line); margin: 0 .3rem; }
+  .chip { background: none; border: 1px solid var(--line); color: var(--dim); padding: .35em 1em; border-radius: 2em; font: inherit; font-size: .85rem; cursor: pointer; transition: color .2s, border-color .2s; }
+  .chip:hover, .chip:focus-visible { border-color: var(--accent); color: var(--fg); outline: none; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #14101f; }
+  .card[hidden] { display: none; }
   /* 兜底与 footer */
   .fallback { border: 1px solid var(--line); border-radius: 16px; padding: 3rem; text-align: center; color: var(--dim); }
   .fallback a { color: var(--accent); }
@@ -41,6 +48,7 @@
       <h1>web-fx-<em>lab</em></h1>
       <p class="sub">炫酷网页效果沉淀库:把获奖网站拆解成可复用的设计方法 + 零依赖单文件 demo。预览是活的;点卡片进全屏试玩。<a href="https://github.com/saime428/web-fx-lab">GitHub ↗</a></p>
     </header>
+    <div class="filters" id="filters" role="group" aria-label="筛选"></div>
     <p class="hintbar" id="count"></p>
     <div class="grid" id="grid"></div>
     <footer>
@@ -72,11 +80,80 @@
     }
     if (!items.length) return fail();
     grid.innerHTML = items.map(p => `
-      <a class="card" href="${p.path}demo.html" target="_blank" rel="noopener" title="${p.mech}">
+      <a class="card" href="${p.path}demo.html" target="_blank" rel="noopener" title="${p.mech}"
+         data-cat="${p.cat}" data-lv="${p.lv}" data-id="${p.id.split('/')[1]}">
         <div class="view"><iframe src="${p.path}demo.html" loading="lazy" title="${p.name} 预览" tabindex="-1"></iframe></div>
         <div class="meta"><b>${p.name}</b><span class="cat">${p.cat}</span><span class="lv">${p.lv}</span></div>
       </a>`).join('');
-    count.textContent = `${items.length} 个 pattern · 全部零依赖单文件 · 预览只读,点卡片全屏试玩`;
+
+    // —— 切片2:筛选 + URL 状态 ——
+    // 套餐表解析(短名 → 卡片 data-id)
+    const setHead = lines.findIndex(l => l.includes('| 场景 |'));
+    const sets = [];
+    for (let i = setHead + 2; setHead > 0 && i < lines.length && lines[i].trim().startsWith('|'); i++) {
+      const c = lines[i].split('|').map(s => s.trim());
+      sets.push({ label: (c[1] || '').split('/')[0].trim(), ids: (c[2] || '').split('+').map(s => s.trim()) });
+    }
+    const cats = [...new Set(items.map(p => p.cat))];
+    const state = { cat: '', level: '', set: '' };            // set 与 cat/level 互斥
+    const bar = document.getElementById('filters');
+    const chip = (label, key, val) => `<button class="chip" data-key="${key}" data-val="${val}" aria-pressed="false">${label}</button>`;
+    bar.innerHTML = chip('全部', '', '')
+      + cats.map(c => chip(c, 'cat', c)).join('')
+      + '<span class="sep">|</span>' + ['★','★★','★★★'].map((s, i) => chip(s, 'level', i + 1)).join('')
+      + '<span class="sep">|</span>' + sets.map((s, i) => chip('套餐·' + s.label, 'set', i + 1)).join('');
+    function apply() {
+      const cards = [...grid.querySelectorAll('.card')];
+      const setIds = state.set ? sets[state.set - 1].ids : null;
+      let shown = 0;
+      cards.forEach(el => {                                   // 只切显隐,不重建 iframe
+        const ok = setIds ? setIds.includes(el.dataset.id)
+          : (!state.cat || el.dataset.cat === state.cat) && (!state.level || el.dataset.lv.length === +state.level);
+        el.hidden = !ok; if (ok) shown++;
+      });
+      count.textContent = `${shown} / ${items.length} 个 pattern · 预览只读,点卡片全屏试玩`;
+      bar.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed',
+        b.dataset.key === '' ? String(!state.cat && !state.level && !state.set) : String(state[b.dataset.key] == b.dataset.val)));
+      const q = new URLSearchParams(Object.entries(state).filter(([, v]) => v));
+      history.replaceState(null, '', q.size ? '?' + q : location.pathname);
+    }
+    bar.addEventListener('click', e => {
+      const b = e.target.closest('.chip'); if (!b) return;
+      const { key, val } = b.dataset;
+      if (!key) Object.assign(state, { cat: '', level: '', set: '' });
+      else if (key === 'set') Object.assign(state, { cat: '', level: '', set: state.set == val ? '' : val });
+      else { state.set = ''; state[key] = state[key] == val ? '' : val; }   // 再点一次取消
+      apply();
+    });
+    const q = new URLSearchParams(location.search);           // 回放 URL 状态
+    ['cat', 'level', 'set'].forEach(k => state[k] = q.get(k) || '');
+    apply();
+
+    // —— 切片3:自动演示引擎(滚动型 demo 在只读预览里缓慢往复滚动) ——
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const anim = [];                                        // { win, max, phase }
+      const vis = new WeakSet();
+      const io = new IntersectionObserver(es => es.forEach(e =>
+        e.isIntersecting ? vis.add(e.target) : vis.delete(e.target)), { rootMargin: '50px' });
+      grid.addEventListener('load', e => {                    // iframe load 不冒泡,capture 接
+        const f = e.target; if (f.tagName !== 'IFRAME') return;
+        try {
+          const doc = f.contentDocument, root = doc.scrollingElement || doc.documentElement;
+          const snap = [doc.documentElement, doc.body].some(el => getComputedStyle(el).scrollSnapType !== 'none');
+          const max = root.scrollHeight - f.clientHeight;
+          if (snap || max < f.clientHeight * .5) return;      // snap 卡和单屏 demo:保持静态
+          anim.push({ card: f.closest('.card'), win: f.contentWindow, max, phase: anim.length * 1.7 });
+          io.observe(f.closest('.card'));
+        } catch (_) { /* 探测失败即静态,不致命 */ }
+      }, true);
+      (function loop(t) {
+        anim.forEach(a => {
+          if (!vis.has(a.card) || a.card.hidden) return;      // 只滚可见卡
+          a.win.scrollTo(0, (0.5 - 0.5 * Math.cos(t / 7000 * Math.PI + a.phase)) * a.max);
+        });
+        requestAnimationFrame(loop);
+      })(0);
+    }
   } catch (e) { fail(); }
 })();
 </script>
