@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Displacement — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101014; color: #ecebf2; min-height: 100vh; display: grid; place-content: center; text-align: center; padding: 6vh 4vw; }
+  h1 { margin-bottom: .4rem; }
+  p { color: #77778a; margin-bottom: 2rem; }
+  canvas { width: min(84vw, 560px); aspect-ratio: 16/10; border-radius: 16px; cursor: pointer; }
+  canvas:focus-visible { outline: 2px solid #8b7cf6; outline-offset: 4px; }
+</style>
+</head>
+<body>
+  <div>
+    <h1>Displacement 图片过渡</h1>
+    <p>悬停/点击/Enter 切换——噪声图把像素"推"过去</p>
+    <canvas id="gl" tabindex="0" role="button" aria-label="切换图片"></canvas>
+  </div>
+<script>
+  // —— 三张纹理全部程序化生成(零外部资源,也躲开 file:// CORS) ——
+  function makeScene(bg1, bg2, fg, label) {
+    const c = document.createElement('canvas'); c.width = 640; c.height = 400;
+    const x = c.getContext('2d');
+    const g = x.createLinearGradient(0, 0, 640, 400); g.addColorStop(0, bg1); g.addColorStop(1, bg2);
+    x.fillStyle = g; x.fillRect(0, 0, 640, 400);
+    x.fillStyle = fg;
+    for (let i = 0; i < 5; i++) { x.beginPath(); x.arc(80 + i * 120, 200 + Math.sin(i * 2.1) * 90, 34, 0, 7); x.fill(); }
+    x.fillStyle = '#fff'; x.font = '800 64px sans-serif'; x.textAlign = 'center'; x.fillText(label, 320, 220);
+    return c;
+  }
+  function makeDisp() {                       // 软圆斑叠加 ≈ 平滑噪声(液态气质)
+    const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+    const x = c.getContext('2d'); x.fillStyle = '#808080'; x.fillRect(0, 0, 256, 256);
+    for (let i = 0; i < 40; i++) {
+      const r = 20 + Math.random() * 60, px = Math.random() * 256, py = Math.random() * 256;
+      const v = Math.floor(Math.random() * 255);
+      const g = x.createRadialGradient(px, py, 0, px, py, r);
+      g.addColorStop(0, `rgba(${v},${v},${v},.5)`); g.addColorStop(1, 'rgba(0,0,0,0)');
+      x.fillStyle = g; x.beginPath(); x.arc(px, py, r, 0, 7); x.fill();
+    }
+    return c;
+  }
+
+  // —— 裸 WebGL:一个 quad,一个 program ——
+  const cv = document.getElementById('gl');
+  cv.width = 640; cv.height = 400;
+  const gl = cv.getContext('webgl', { preserveDrawingBuffer: true });
+  const VS = 'attribute vec2 aPos; varying vec2 vUv; void main(){ vUv = aPos*.5+.5; vUv.y = 1.-vUv.y; gl_Position = vec4(aPos,0.,1.); }';
+  const FS = `precision mediump float; varying vec2 vUv;
+    uniform sampler2D uTexA, uTexB, uDisp; uniform float uP;
+    void main(){
+      float d = texture2D(uDisp, vUv).r;
+      vec2 uvA = vUv + vec2(d * .35 * uP, 0.);
+      vec2 uvB = vUv - vec2(d * .35 * (1. - uP), 0.);
+      gl_FragColor = mix(texture2D(uTexA, uvA), texture2D(uTexB, uvB), uP);
+    }`;
+  function shader(type, src) {
+    const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, shader(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog); gl.useProgram(prog);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);  // 超屏三角,省一个顶点
+  const loc = gl.getAttribLocation(prog, 'aPos');
+  gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  function texture(unit, src) {
+    gl.activeTexture(gl.TEXTURE0 + unit);
+    gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
+    ['WRAP_S','WRAP_T'].forEach(w => gl.texParameteri(gl.TEXTURE_2D, gl['TEXTURE_'+w], gl.CLAMP_TO_EDGE));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  }
+  texture(0, makeScene('#2b1e63','#8b7cf6','#47d8ff','ONE'));
+  texture(1, makeScene('#5c1a08','#ff7c5c','#e8ff47','TWO'));
+  texture(2, makeDisp());
+  ['uTexA','uTexB','uDisp'].forEach((n, i) => gl.uniform1i(gl.getUniformLocation(prog, n), i));
+  const uP = gl.getUniformLocation(prog, 'uP');
+
+  // —— 进度:lerp 逼近目标,收敛即停 rAF ——
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let p = 0, target = 0, raf = 0;
+  function draw() { gl.uniform1f(uP, p); gl.drawArrays(gl.TRIANGLES, 0, 3); }
+  function tick() {
+    p += (target - p) * 0.09;
+    if (Math.abs(target - p) < 0.001) { p = target; draw(); raf = 0; return; }   // 收敛停轮,GPU 不空转
+    draw(); raf = requestAnimationFrame(tick);
+  }
+  function go(t) {
+    target = t;
+    if (reduced) { p = t; draw(); return; }   // 降级:直接跳终态 = 普通图片切换
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  cv.addEventListener('pointerenter', () => go(1));
+  cv.addEventListener('pointerleave', () => go(0));
+  cv.addEventListener('click', () => go(target ? 0 : 1));                        // 触屏:点击切换
+  cv.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(target ? 0 : 1); } });
+  draw();
+</script>
+</body>
+</html>

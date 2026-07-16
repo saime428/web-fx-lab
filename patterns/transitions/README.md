@@ -7,3 +7,4 @@
 | [章节主题突变](theme-shift/) | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/transitions/theme-shift/demo.html) |
 | [View Transitions 共享元素过渡](view-transitions/) | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/transitions/view-transitions/demo.html) |
 | [全屏菜单 Stagger 展开](menu-stagger-reveal/) | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/transitions/menu-stagger-reveal/demo.html) |
+| [Displacement 图片过渡](image-displacement/) | ★★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/transitions/image-displacement/demo.html) |
