@@ -51,6 +51,7 @@
 | [CSS 滚动擦洗 Scroll Scrub](patterns/scroll/css-scroll-scrub/) | 滚动动效 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/scroll/css-scroll-scrub/demo.html) |
 | [View Transitions 共享元素过渡](patterns/transitions/view-transitions/) | 页面切换 | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/transitions/view-transitions/demo.html) |
 | [Canvas 氛围背景 Ambient BG](patterns/3d-webgl/canvas-ambient-bg/) | 3D/WebGL | ★★ | [demo](https://saime428.github.io/web-fx-lab/patterns/3d-webgl/canvas-ambient-bg/demo.html) |
+| [全屏菜单 Stagger 展开](patterns/transitions/menu-stagger-reveal/) | 页面切换 | ★ | [demo](https://saime428.github.io/web-fx-lab/patterns/transitions/menu-stagger-reveal/demo.html) |
 
 ## Case 索引
 

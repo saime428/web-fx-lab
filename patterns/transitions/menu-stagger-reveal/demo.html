@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Stagger Reveal — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #101014; color: #ecebf2; min-height: 100dvh; display: grid; place-content: center; text-align: center; }
+  p { color: #77778a; margin-top: .8rem; }
+  .burger {
+    position: fixed; top: 24px; right: 24px; z-index: 10;
+    background: #1b1b22; border: 1px solid #3a3a46; color: #ecebf2;
+    padding: .6em 1.4em; border-radius: 2em; font: inherit; cursor: pointer;
+  }
+  .burger:hover, .burger:focus-visible { border-color: #8b7cf6; outline: none; }
+  /* 遮罩层:clip-path 从顶部揭开 */
+  .menu {
+    position: fixed; inset: 0; z-index: 9; background: #8b7cf6; color: #14101f;
+    display: grid; place-content: center; gap: .4em;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path .6s cubic-bezier(.22,1,.36,1);
+  }
+  .menu.open { clip-path: inset(0); }
+  .menu a {
+    display: block; font-size: clamp(2.2rem, 8vw, 4.5rem); font-weight: 800;
+    color: inherit; text-decoration: none;
+    opacity: 0; transform: translateY(40px);
+  }
+  .menu.open a { opacity: 1; transform: none; transition: opacity .5s, transform .5s cubic-bezier(.22,1,.36,1); }
+  .menu a:hover, .menu a:focus-visible { text-decoration: underline; text-underline-offset: .15em; outline: none; }
+  .menu small { margin-top: 1.5rem; opacity: .6; }
+  @media (prefers-reduced-motion: reduce) {
+    .menu, .menu.open a { transition: none; }
+    .menu a { transition-delay: 0ms !important; }
+  }
+</style>
+</head>
+<body>
+  <h1>全屏菜单 Stagger 展开</h1>
+  <p>点右上角 Menu(Escape 关闭)——遮罩揭幕,菜单项错落到位</p>
+
+  <button class="burger" aria-expanded="false" aria-controls="menu">Menu</button>
+  <nav class="menu" id="menu" inert>
+    <a href="#">Home</a>
+    <a href="#">Works</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+    <small>打开有 stagger,关闭一律 0 延迟快速收场</small>
+  </nav>
+<script>
+  const burger = document.querySelector('.burger'), menu = document.getElementById('menu');
+  const links = [...menu.querySelectorAll('a')];
+  function toggle(open) {
+    // 打开:索引换延迟;关闭:全体立刻走,出场不磨蹭
+    links.forEach((a, i) => a.style.transitionDelay = open ? `${150 + i * 70}ms` : '0ms');
+    menu.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    burger.textContent = open ? 'Close' : 'Menu';
+    if (open) { menu.removeAttribute('inert'); } else { menu.setAttribute('inert', ''); }
+    document.body.style.overflow = open ? 'hidden' : '';   // 锁背景滚动
+    (open ? links[0] : burger).focus();                    // 焦点跟着场景走
+  }
+  burger.addEventListener('click', () => toggle(!menu.classList.contains('open')));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && menu.classList.contains('open')) toggle(false); });
+</script>
+</body>
+</html>
