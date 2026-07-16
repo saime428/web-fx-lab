@@ -27,3 +27,11 @@
 ## 借鉴笔记
 
 代表了炫酷网页的"上限路线":自研引擎、全 canvas。个人项目别学架构,学它的过渡语言——粒子化消散/重组可以用 Three.js 简化复现。
+
+## 运行时实测(Chrome 注入探测,2026-07-15)
+
+- **自研引擎实锤**: `window.Hydra` / `World` / `Global` 全局对象,非 Three.js 生态
+- **多线程渲染**: 加载 8 份 `hydra-thread.js`——Web Worker 线程池分担计算
+- 单 canvas WebGL2,整页仅 **54 个 DOM 节点**,UI 基本都在 GL 里画
+- shader 预编译分发(`compiled.vs`),配 `uil.json` 运行时配置
+- 品牌字体 NBArchitektStd(woff2)

@@ -28,3 +28,11 @@
 ## 借鉴笔记
 
 Awwwards 官方 case study 详细讲了晶体算法和 shader UI,是本库最值得精读的一手资料。"滚动进度直接喂给 shader uniform" 是 3D 叙事站的核心管线。
+
+## 运行时实测(Chrome 注入探测,2026-07-15)
+
+- 引擎: Three.js(WebGLRenderer)+ three-mesh-bvh + GSAP,无 Lenis;Svelte 负责应用壳
+- **219 个自定义 shader**(`void main(` 计数),几乎所有材质都是手写 GLSL
+- **杀手锏: `scroll-datatexture.ktx2`(1.2MB)**——把滚动驱动的动画数据预烘焙成 KTX2 数据纹理,运行时用 DataTexture 按滚动进度采样,CPU 零计算
+- 全部贴图走 KTX2 GPU 压缩(normal/color/roughness 分层,单张最大 1.1MB)
+- 构建: Vite,入口仅 16KB,App3D 主 chunk 1.45MB 懒加载

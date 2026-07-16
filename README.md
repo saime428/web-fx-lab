@@ -34,9 +34,18 @@
 
 ## Case 索引
 
-| 网站 | 亮点 | 拆解 |
-|---|---|---|
-| (示例) | 见模板用法 | [`cases/_example/`](cases/_example/analysis.md) |
+| 网站 | 亮点 | 开源 | 拆解 |
+|---|---|---|---|
+| [Bruno Simon 2019](https://2019.bruno-simon.com/) | 物理小车探索式导航 | ✅ [源码](https://github.com/brunosimon/folio-2019) | [拆解](cases/bruno-simon-2019/analysis.md) |
+| [Igloo Inc.](https://www.igloo.inc/) | 滚动雕刻冰晶,shader 驱动 UI | 官方 case study | [拆解](cases/igloo-inc/analysis.md) |
+| [Messenger](https://messenger.abeto.co/) | 5.7MB 多人小星球游戏 | — | [拆解](cases/messenger/analysis.md) |
+| [Lando Norris](https://landonorris.com/) | Webflow+Rive+GSAP 拿 SOTM | — | [拆解](cases/lando-norris/analysis.md) |
+| [Anime.js](https://animejs.com/) | 文档即演示,stagger 网格 | ✅ [源码](https://github.com/juliangarnier/anime) | [拆解](cases/animejs/analysis.md) |
+| [Robin Payot](https://robinpayot.com/) | 滚动=3D 镜头推进 | — | [拆解](cases/robin-payot/analysis.md) |
+| [Active Theory](https://activetheory.net/) | 自研引擎全 canvas UI | — | [拆解](cases/active-theory/analysis.md) |
+| [Shopify Editions W26](https://www.shopify.com/editions/winter2026) | 发布说明做成滚动叙事 | — | [拆解](cases/shopify-editions-winter-26/analysis.md) |
+| [Hashgraph Ventures](https://hashgraphvc.com/) | 章节宣言叙事+氛围音 | — | [拆解](cases/hashgraph-ventures/analysis.md) |
+| [infinite imaginations](https://oninross.github.io/infinite-imaginations/) | TweenMax 时代考古 | ✅ [源码](https://github.com/oninross/infinite-imaginations) | [拆解](cases/infinite-imaginations/analysis.md) |
 
 ## 模板
 
