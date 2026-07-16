@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section Narrative — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #0c0e12; color: #eceae4; }
+  nav { position: fixed; right: 4vw; top: 50%; transform: translateY(-50%); display: grid; gap: 1.1rem; z-index: 2; }
+  nav a { color: #555; text-decoration: none; font-size: .8rem; letter-spacing: .15em; font-variant-numeric: tabular-nums; transition: color .3s, letter-spacing .3s; }
+  nav a.active { color: #e8c15a; letter-spacing: .3em; }
+  section { min-height: 100vh; display: grid; place-content: center; padding: 12vh 18vw 12vh 8vw; scroll-margin-top: 0; }
+  .num { font-size: .85rem; color: #e8c15a; letter-spacing: .25em; margin-bottom: 1rem; }
+  h2 { font-size: clamp(2rem, 6vw, 4.2rem); letter-spacing: -.02em; line-height: 1.05; }
+  p { color: #9a968c; max-width: 32em; line-height: 1.9; margin-top: 1.4rem; }
+  @media (max-width: 720px) { nav { display: none; } }
+</style>
+</head>
+<body>
+  <nav aria-label="章节导航">
+    <a href="#s1">//01</a><a href="#s2">//02</a><a href="#s3">//03</a><a href="#s4">//04</a>
+  </nav>
+  <section id="s1"><div><div class="num">//01 MANIFESTO</div><h2>先给故事编号,<br>再让人往下读</h2><p>右侧导航永远告诉读者:你在第几章、一共几章。确定性是一种体面。</p></div></section>
+  <section id="s2"><div><div class="num">//02 APPROACH</div><h2>编号即节奏</h2><p>//01 //02 的文件编号式排版,用极小的成本传达"这是一份被认真组织过的文档"。</p></div></section>
+  <section id="s3"><div><div class="num">//03 TEAM</div><h2>视口中线检测</h2><p>rootMargin: -50% 0px -50% 0px——章节跨过屏幕中线才算"当前",边界处不抖。</p></div></section>
+  <section id="s4"><div><div class="num">//04 CONTACT</div><h2>点导航试试</h2><p>scrollIntoView({ behavior: 'smooth' }),原生平滑滚动,零依赖。</p></div></section>
+<script>
+  const links = document.querySelectorAll('nav a');
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(l => {
+      const on = l.getAttribute('href') === '#' + e.target.id;
+      l.classList.toggle('active', on);
+      if (on) l.setAttribute('aria-current', 'true'); else l.removeAttribute('aria-current');
+    });
+  }), { rootMargin: '-50% 0px -50% 0px' });
+  document.querySelectorAll('section').forEach(s => io.observe(s));
+  links.forEach(l => l.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(l.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+  }));
+</script>
+</body>
+</html>

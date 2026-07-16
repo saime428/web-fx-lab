@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ambient Sound Toggle — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #0b0f0d; color: #e8ede9; height: 100vh; display: grid; place-content: center; text-align: center; }
+  h1 { font-size: clamp(1.8rem, 5vw, 3.4rem); letter-spacing: -.02em; }
+  p { color: #7d8a82; margin-top: 1rem; max-width: 30em; line-height: 1.8; }
+  .toggle { position: fixed; top: 4vh; right: 4vw; background: none; border: 1px solid #3a453f; color: #e8ede9; border-radius: 99px; padding: .55em 1.3em; font-size: .8rem; letter-spacing: .2em; cursor: pointer; transition: border-color .3s, color .3s; }
+  .toggle:hover, .toggle:focus-visible { border-color: #63e6a8; color: #63e6a8; }
+  .toggle .dot { display: inline-block; width: .5em; height: .5em; border-radius: 50%; background: #444; margin-right: .6em; transition: background .3s, box-shadow .3s; }
+  .toggle.on .dot { background: #63e6a8; box-shadow: 0 0 8px #63e6a8; }
+</style>
+</head>
+<body>
+  <button class="toggle" aria-pressed="false"><span class="dot"></span>SOUND OFF</button>
+  <div>
+    <h1>给页面一层空气</h1>
+    <p>点右上角开关。氛围音由 WebAudio 实时合成(两个失谐正弦波 + LFO),没有任何音频文件。注意开关时 1.5s 的音量渐变——这是质感所在。</p>
+  </div>
+<script>
+  const btn = document.querySelector('.toggle');
+  let ctx = null, master = null, on = false;
+  function build() {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+    [[110, .5], [110.7, .45], [220.3, .12]].forEach(([f, v]) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.frequency.value = f; o.type = 'sine'; g.gain.value = v;
+      const lfo = ctx.createOscillator(), lg = ctx.createGain();
+      lfo.frequency.value = .07 + Math.random() * .06; lg.gain.value = v * .35;
+      lfo.connect(lg); lg.connect(g.gain);
+      o.connect(g); g.connect(master); o.start(); lfo.start();
+    });
+  }
+  btn.addEventListener('click', () => {
+    if (!ctx) build();
+    if (ctx.state === 'suspended') ctx.resume();
+    on = !on;
+    const t = ctx.currentTime;
+    master.gain.cancelScheduledValues(t);
+    master.gain.setValueAtTime(master.gain.value, t);
+    master.gain.linearRampToValueAtTime(on ? 0.13 : 0, t + 1.5);  // 关键:渐变
+    btn.classList.toggle('on', on);
+    btn.setAttribute('aria-pressed', on);
+    btn.innerHTML = `<span class="dot"></span>SOUND ${on ? 'ON' : 'OFF'}`;
+  });
+</script>
+</body>
+</html>

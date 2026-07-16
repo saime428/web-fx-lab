@@ -31,6 +31,9 @@
 | 效果 | 分类 | 难度 | Demo |
 |---|---|---|---|
 | [滚动渐显 Scroll Reveal](patterns/scroll/scroll-reveal/) | 滚动动效 | ★ | [demo](patterns/scroll/scroll-reveal/demo.html) |
+| [横向滚动画廊 Horizontal Gallery](patterns/scroll/horizontal-gallery/) | 滚动动效 | ★★ | [demo](patterns/scroll/horizontal-gallery/demo.html) |
+| [Hover 双图切换 Image Swap](patterns/hover/image-swap/) | 悬停交互 | ★ | [demo](patterns/hover/image-swap/demo.html) |
+| [SVG 线条绘制 Line Draw](patterns/text/svg-line-draw/) | 文字动效 | ★★ | [demo](patterns/text/svg-line-draw/demo.html) |
 
 ## Case 索引
 
@@ -50,15 +53,4 @@
 ## 模板
 
 - 网站拆解:[`docs/templates/case-analysis.md`](docs/templates/case-analysis.md)
-- 效果条目:[`docs/templates/pattern.md`](docs/templates/pattern.md)
-- 常用技术雷达:[`docs/tech-radar.md`](docs/tech-radar.md)
-
-## 收录标准
-
-1. 效果必须能说清"为什么好看"(设计意图),不只是"看着炫"。
-2. Demo 尽量零依赖、单文件、双击可打开;确需库时在文档中注明版本。
-3. 每个 pattern 标注:核心技术、性能注意点、可访问性影响(如 `prefers-reduced-motion`)。
-
-## License
-
-MIT
+- 效果条目:[`docs/templat

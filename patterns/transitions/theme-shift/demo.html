@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theme Shift — web-fx-lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  :root { --bg: #0d0d0d; --fg: #f2f2ee; --accent: #c5f542; }
+  body[data-theme="ice"]  { --bg: #dfeef7; --fg: #06121d; --accent: #0b6bcb; }
+  body[data-theme="warm"] { --bg: #f5ede2; --fg: #1a1208; --accent: #e05c2a; }
+  body[data-theme="void"] { --bg: #14001f; --fg: #f0e6ff; --accent: #b26bff; }
+  body {
+    font-family: -apple-system, "PingFang SC", sans-serif;
+    background: var(--bg); color: var(--fg);
+    transition: background .8s ease, color .8s ease;
+  }
+  section { min-height: 100vh; display: grid; place-content: center; padding: 10vh 8vw; }
+  .num { color: var(--accent); font-size: .9rem; letter-spacing: .2em; transition: color .8s; }
+  h2 { font-size: clamp(2rem, 7vw, 5rem); letter-spacing: -.03em; margin: .3em 0; }
+  p { color: color-mix(in srgb, var(--fg) 60%, transparent); max-width: 34em; line-height: 1.8; }
+  .chip { display: inline-block; margin-top: 1.2rem; padding: .5em 1.2em; border: 1px solid var(--accent); color: var(--accent); border-radius: 99px; font-size: .85rem; transition: color .8s, border-color .8s; }
+  @media (prefers-reduced-motion: reduce) { body, .num, .chip { transition: none; } }
+</style>
+</head>
+<body>
+  <section data-theme=""><div><div class="num">//01 DARK</div><h2>每一章,换一套皮肤</h2><p>整页配色由 CSS 变量驱动。往下滚,观察背景、文字、强调色如何整体翻转——没有任何元素重新渲染,只是变量变了。</p><span class="chip">--accent: lime</span></div></section>
+  <section data-theme="ice"><div><div class="num">//02 ICE</div><h2>深色到浅色</h2><p>最大反差的一跳。长页叙事里放在"转折"章节,读者会明显感到"进入了新的部分"。</p><span class="chip">--accent: blue</span></div></section>
+  <section data-theme="warm"><div><div class="num">//03 WARM</div><h2>换个温度</h2><p>色相跳变比明度跳变更有情绪。暖色章节适合放人物、故事、收尾感谢。</p><span class="chip">--accent: orange</span></div></section>
+  <section data-theme="void"><div><div class="num">//04 VOID</div><h2>回到夜里</h2><p>IntersectionObserver 检测视口中线,章节过半才切换,不会在边界来回抖。</p><span class="chip">--accent: violet</span></div></section>
+<script>
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) document.body.dataset.theme = e.target.dataset.theme;
+  }), { rootMargin: '-50% 0px -50% 0px' });
+  document.querySelectorAll('section').forEach(s => io.observe(s));
+</script>
+</body>
+</html>
