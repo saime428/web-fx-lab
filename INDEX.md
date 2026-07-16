@@ -5,29 +5,29 @@
 
 ## 全部 pattern
 
-| Pattern | 难度 | 一句话机制 | 适用场景 |
-|---|---|---|---|
-| [scroll/scroll-reveal](patterns/scroll/scroll-reveal/) | ★ | IntersectionObserver 进视口加 class | 任何内容页入场,最保守的默认选择 |
-| [scroll/horizontal-gallery](patterns/scroll/horizontal-gallery/) | ★★ | sticky 容器把纵向滚动映射为横向位移 | 作品集、时间线、产品线陈列 |
-| [scroll/scroll-driven-shader](patterns/scroll/scroll-driven-shader/) | ★★★ | 滚动进度 → shader uniform | 3D 叙事站、WebGL 背景联动 |
-| [scroll/parallax-cards](patterns/scroll/parallax-cards/) | ★ | 偏移 = 离视口中心距离 × (speed−1) | 漂浮卡片群、贴纸、装饰元素 |
-| [scroll/css-scroll-scrub](patterns/scroll/css-scroll-scrub/) | ★ | CSS animation-timeline: scroll()/view(),零 JS | 进度条、可倒放的入场,渐进增强场景 |
-| [hover/image-swap](patterns/hover/image-swap/) | ★ | 双图预载 + opacity 切换 | 画廊/头像 hover,成本最低的惊喜 |
-| [text/svg-line-draw](patterns/text/svg-line-draw/) | ★★ | stroke-dashoffset 从满到零 | logo 入场、签名、路径叙事 |
-| [text/stagger-grid](patterns/text/stagger-grid/) | ★ | delay = 到波心距离 × 单位延迟 | 网格/列表的编排入场,波纹注意力 |
-| [text/split-text-reveal](patterns/text/split-text-reveal/) | ★ | 拆 span + 索引延迟 + 行遮罩 | 大标题入场,获奖站标配,三站实测撞车 |
-| [text/scroll-marquee](patterns/text/scroll-marquee/) | ★ | rAF 推进 + lerp 滚动速度反馈 | 品牌字幕带、章节分隔、logo 墙 |
-| [text/count-up](patterns/text/count-up/) | ★ | IntersectionObserver + rAF easeOut + Intl | 数据统计区,B 端性价比之王 |
-| [transitions/theme-shift](patterns/transitions/theme-shift/) | ★ | 滚动触发 data 属性换 CSS 变量 | 长页分章换肤,低成本高感知 |
-| [transitions/view-transitions](patterns/transitions/view-transitions/) | ★★ | startViewTransition + 同名共享元素 | 列表↔详情、SPA 路由转场 |
-| [transitions/menu-stagger-reveal](patterns/transitions/menu-stagger-reveal/) | ★ | clip-path 遮罩 + 菜单项索引延迟 | 任何站的导航,泛用性最高 |
-| [transitions/image-displacement](patterns/transitions/image-displacement/) | ★★★ | 噪声图推 UV 采样坐标再 mix | 图片画廊的高级切换,液态质感 |
-| [layout/section-narrative](patterns/layout/section-narrative/) | ★ | 全屏分节 + 编号 + 进退导航 | 宣言页、发布页、故事型官网 |
-| [layout/sticky-stack](patterns/layout/sticky-stack/) | ★ | 每卡 sticky top:0,后者压前者 | 功能列表、服务介绍、案例翻牌 |
-| [layout/comment-heading](patterns/layout/comment-heading/) | ★ | CSS counter + ::before 注释前缀 | 开发者/极客气质的章节标题 |
-| [loading/entry-preloader](patterns/loading/entry-preloader/) | ★★ | 资源预载 + 进度 + Enter 门 | 重资产站开场,兼做声音手势解锁 |
-| [loading/ambient-sound-toggle](patterns/loading/ambient-sound-toggle/) | ★★ | 手势解锁 AudioContext + 全局开关 | 体验型站的氛围音 |
-| [3d-webgl/canvas-ambient-bg](patterns/3d-webgl/canvas-ambient-bg/) | ★★ | 渐变圆斑 + lighter 叠加 + 正弦漂移 | 任何站的氛围背景层,高级感地板价 |
+| Pattern | 名称 | 难度 | 一句话机制 | 适用场景 |
+|---|---|---|---|---|
+| [scroll/scroll-reveal](patterns/scroll/scroll-reveal/) | 滚动渐显 | ★ | IntersectionObserver 进视口加 class | 任何内容页入场,最保守的默认选择 |
+| [scroll/horizontal-gallery](patterns/scroll/horizontal-gallery/) | 横向滚动画廊 | ★★ | sticky 容器把纵向滚动映射为横向位移 | 作品集、时间线、产品线陈列 |
+| [scroll/scroll-driven-shader](patterns/scroll/scroll-driven-shader/) | 滚动驱动 Shader | ★★★ | 滚动进度 → shader uniform | 3D 叙事站、WebGL 背景联动 |
+| [scroll/parallax-cards](patterns/scroll/parallax-cards/) | 视差漂浮卡片 | ★ | 偏移 = 离视口中心距离 × (speed−1) | 漂浮卡片群、贴纸、装饰元素 |
+| [scroll/css-scroll-scrub](patterns/scroll/css-scroll-scrub/) | CSS 滚动擦洗 | ★ | CSS animation-timeline: scroll()/view(),零 JS | 进度条、可倒放的入场,渐进增强场景 |
+| [hover/image-swap](patterns/hover/image-swap/) | Hover 双图切换 | ★ | 双图预载 + opacity 切换 | 画廊/头像 hover,成本最低的惊喜 |
+| [text/svg-line-draw](patterns/text/svg-line-draw/) | SVG 线条绘制 | ★★ | stroke-dashoffset 从满到零 | logo 入场、签名、路径叙事 |
+| [text/stagger-grid](patterns/text/stagger-grid/) | Stagger 网格波纹 | ★ | delay = 到波心距离 × 单位延迟 | 网格/列表的编排入场,波纹注意力 |
+| [text/split-text-reveal](patterns/text/split-text-reveal/) | 逐行/逐字拆分入场 | ★ | 拆 span + 索引延迟 + 行遮罩 | 大标题入场,获奖站标配,三站实测撞车 |
+| [text/scroll-marquee](patterns/text/scroll-marquee/) | 滚动响应字幕 | ★ | rAF 推进 + lerp 滚动速度反馈 | 品牌字幕带、章节分隔、logo 墙 |
+| [text/count-up](patterns/text/count-up/) | 数字滚动 | ★ | IntersectionObserver + rAF easeOut + Intl | 数据统计区,B 端性价比之王 |
+| [transitions/theme-shift](patterns/transitions/theme-shift/) | 章节主题突变 | ★ | 滚动触发 data 属性换 CSS 变量 | 长页分章换肤,低成本高感知 |
+| [transitions/view-transitions](patterns/transitions/view-transitions/) | View Transitions 过渡 | ★★ | startViewTransition + 同名共享元素 | 列表↔详情、SPA 路由转场 |
+| [transitions/menu-stagger-reveal](patterns/transitions/menu-stagger-reveal/) | 全屏菜单 Stagger 展开 | ★ | clip-path 遮罩 + 菜单项索引延迟 | 任何站的导航,泛用性最高 |
+| [transitions/image-displacement](patterns/transitions/image-displacement/) | Displacement 图片过渡 | ★★★ | 噪声图推 UV 采样坐标再 mix | 图片画廊的高级切换,液态质感 |
+| [layout/section-narrative](patterns/layout/section-narrative/) | 章节式滚动叙事 | ★ | 全屏分节 + 编号 + 进退导航 | 宣言页、发布页、故事型官网 |
+| [layout/sticky-stack](patterns/layout/sticky-stack/) | 粘性堆叠 | ★ | 每卡 sticky top:0,后者压前者 | 功能列表、服务介绍、案例翻牌 |
+| [layout/comment-heading](patterns/layout/comment-heading/) | 注释风标题 | ★ | CSS counter + ::before 注释前缀 | 开发者/极客气质的章节标题 |
+| [loading/entry-preloader](patterns/loading/entry-preloader/) | 加载序章 | ★★ | 资源预载 + 进度 + Enter 门 | 重资产站开场,兼做声音手势解锁 |
+| [loading/ambient-sound-toggle](patterns/loading/ambient-sound-toggle/) | 氛围音开关 | ★★ | 手势解锁 AudioContext + 全局开关 | 体验型站的氛围音 |
+| [3d-webgl/canvas-ambient-bg](patterns/3d-webgl/canvas-ambient-bg/) | Canvas 氛围背景 | ★★ | 渐变圆斑 + lighter 叠加 + 正弦漂移 | 任何站的氛围背景层,高级感地板价 |
 
 ## 气质套餐(场景 → 组合)
 
