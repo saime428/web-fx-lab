@@ -17,6 +17,7 @@
 - 21 个 pattern,全部零依赖、过了 node --check 和链接检查(验证脚本思路:抽 `<script>` 内容 node --check + md 相对链接/Pages 链接映射回本地存在性)
 - 已推 GitHub 并开通 Pages
 - 2026-07-16 口径调整:可复现性放宽为"保住核心机制的简化版即可",新增分类覆盖度排序项(见 docs/criteria.md)
+- 消费层已建:INDEX.md(AI 选型索引,新增/改 pattern 时**必须同步更新**)+ skills/web-fx-lab/SKILL.md(Claude Code skill,装在 ~/.claude/skills/web-fx-lab/,改了记得重新复制过去)。规划中:可视化画廊首页 → 纯 pattern 拼的样板间 landing page
 
 ### 未完成(按优先级)
 

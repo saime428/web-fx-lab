@@ -69,6 +69,12 @@
 | [Hashgraph Ventures](https://hashgraphvc.com/) | 章节宣言叙事+氛围音 | — | [拆解](cases/hashgraph-ventures/analysis.md) |
 | [infinite imaginations](https://oninross.github.io/infinite-imaginations/) | TweenMax 时代考古 | ✅ [源码](https://github.com/oninross/infinite-imaginations) | [拆解](cases/infinite-imaginations/analysis.md) |
 
+## 怎么在项目里用
+
+- **AI 选型入口**:[`INDEX.md`](INDEX.md) 是机器友好的单文件决策索引(全部 pattern 一览 + 场景套餐 + 使用铁律)
+- **Claude Code skill**:[`skills/web-fx-lab/SKILL.md`](skills/web-fx-lab/SKILL.md),安装 = 复制到 `~/.claude/skills/web-fx-lab/`,之后任何会话说"做个有质感的官网"会自动翻本库选料
+- 原则:抄机制不抄样式;真实项目踩坑回写进 pattern 的"实战笔记"
+
 ## 模板与规范
 
 - 网站拆解:[`docs/templates/case-analysis.md`](docs/templates/case-analysis.md)
